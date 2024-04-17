@@ -1,3 +1,7 @@
+import "./globals.css";
+
+// const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "http://localhost:8080";
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="dark">{children}</body>
     </html>
   );
 }
