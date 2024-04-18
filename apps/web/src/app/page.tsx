@@ -2,9 +2,9 @@ import { MonacoEditor } from "@/components/editor";
 
 function Page() {
   return (
-    <div>
+    <main>
       <MonacoEditor />
-    </div>
+    </main>
   );
 }
 
