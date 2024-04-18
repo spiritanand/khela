@@ -26,7 +26,7 @@ export function MonacoEditor() {
         theme="vs-dark"
       />
 
-      <Button onClick={showValue}>Show value</Button>
+      <Button onClick={showValue}>Execute</Button>
     </>
   );
 }

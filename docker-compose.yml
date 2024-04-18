@@ -12,10 +12,10 @@ services:
     networks:
       - app_network
   api:
-    container_name: ws-server
+    container_name: server
     build:
       context: .
-      dockerfile: apps/ws-server/Dockerfile
+      dockerfile: apps/server/Dockerfile
     restart: always
     ports:
       - 8080:8080
