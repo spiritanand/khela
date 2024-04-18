@@ -1,5 +1,11 @@
+import { MonacoEditor } from "@/components/editor";
+
 function Page() {
-  return <div>PAGER</div>;
+  return (
+    <div>
+      <MonacoEditor />
+    </div>
+  );
 }
 
 export default Page;
