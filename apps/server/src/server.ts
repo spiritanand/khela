@@ -3,6 +3,8 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import compute from "./routes/compute";
+import http from "http";
+import { WebSocketServer } from "ws";
 
 export const createServer = () => {
   const app = express();
@@ -26,4 +28,10 @@ export const createServer = () => {
   app.use(compute);
 
   return app;
+};
+
+export const createWsServer = (server: http.Server) => {
+  return new WebSocketServer({
+    server,
+  });
 };

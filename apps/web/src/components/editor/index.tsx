@@ -4,6 +4,7 @@ import Editor, { OnMount } from "@monaco-editor/react";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { editor } from "monaco-editor";
+import Terminal from "@/components/terminal";
 
 export function MonacoEditor() {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -27,6 +28,8 @@ export function MonacoEditor() {
       />
 
       <Button onClick={showValue}>Execute</Button>
+
+      <Terminal />
     </>
   );
 }
