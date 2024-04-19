@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   transpilePackages: ["@repo/ui"],
   output: "standalone",
   experimental: {
