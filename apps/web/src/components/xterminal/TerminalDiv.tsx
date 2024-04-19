@@ -24,7 +24,13 @@ function terminalDiv({ term, ws }: { term: Terminal; ws: WebSocket }) {
     });
   }, [terminalRef]);
 
-  return <div id="terminal" ref={terminalRef} />;
+  return (
+    <div
+      id="terminal"
+      ref={terminalRef}
+      className="max-h-[32vh] overflow-scroll"
+    />
+  );
 }
 
 export default terminalDiv;

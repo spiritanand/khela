@@ -34,6 +34,7 @@ wss.on("connection", async (ws) => {
   });
 
   // Output: Sent to the frontend
+  // @ts-expect-error -- Valid
   ptyProcess?.on("data", function (data: string) {
     const message = {
       type: "command",

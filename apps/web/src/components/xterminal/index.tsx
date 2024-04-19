@@ -1,5 +1,7 @@
 "use client";
 
+// Credits - https://www.eddymens.com/blog/creating-a-browser-based-interactive-terminal-using-xtermjs-and-nodejs
+
 import { useEffect, useState } from "react";
 import TerminalDiv from "@/components/xterminal/TerminalDiv";
 import { Terminal } from "@xterm/xterm";
