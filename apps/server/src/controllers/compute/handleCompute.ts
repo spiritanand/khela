@@ -23,8 +23,14 @@ async function executeJS(code: string) {
     if (stderr) return { error: stderr };
     else return { result: stdout };
   } catch (e) {
+    let errorMessage = "Something went wrong";
+
+    if (e && typeof e === "object" && "message" in e) {
+      errorMessage = e.message as string;
+    }
+
     return {
-      error: e?.message || "Something went wrong",
+      error: errorMessage,
     };
   }
 }
