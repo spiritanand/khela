@@ -1,17 +1,18 @@
 "use client";
 
 import Editor, { OnChange, OnMount } from "@monaco-editor/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { editor } from "monaco-editor";
 import dynamic from "next/dynamic";
-import files from "./files";
+import debounce from "lodash.debounce";
 
 const XTerminal = dynamic(() => import("src/components/xterminal"), {
   ssr: false,
 });
 
-export function MonacoEditor() {
+export function MonacoEditor({ initFiles }: { initFiles: any }) {
+  const [files, setFiles] = useState(initFiles);
   const [fileName, setFileName] = useState("index.html");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const previewRef = useRef<HTMLIFrameElement | null>(null);
@@ -34,11 +35,39 @@ export function MonacoEditor() {
     updateIframeContent(newValue, fileName.split(".")[1]);
   };
 
+  const updateFiles = useCallback((updatedFiles: any) => {
+    fetch("/api/updateFiles?id=1", {
+      method: "POST",
+      body: JSON.stringify({
+        files: updatedFiles,
+      }),
+    });
+  }, []);
+
+  const debouncedUpdateFiles = useCallback(
+    debounce(updateFiles, 5000, {
+      leading: true,
+      maxWait: 5000,
+    }),
+    [],
+  );
+
   function updateIframeContent(
-    newValue: string,
+    updatedValue: string,
     type: "html" | "css" | "js" = "html",
   ) {
     if (!previewRef.current) return;
+
+    const updatedState = {
+      ...files,
+      [fileName]: {
+        ...files[fileName],
+        value: updatedValue,
+      },
+    };
+
+    debouncedUpdateFiles(updatedState);
+    setFiles(updatedState);
 
     const iframe = previewRef.current;
 
@@ -47,28 +76,26 @@ export function MonacoEditor() {
     const parser = new DOMParser();
 
     const doc = parser.parseFromString(
-      type === "html" ? newValue : files["index.html"].value,
+      type === "html" ? updatedValue : files["index.html"].value,
       "text/html",
     );
 
     // Inject CSS
     const styleElement = doc.createElement("style");
     styleElement.textContent =
-      type === "css" ? newValue : files["style.css"].value;
+      type === "css" ? updatedValue : files["style.css"].value;
     doc.head.appendChild(styleElement);
 
-    // Inject JavaScript
+    // Inject JS
     const scriptElement = doc.createElement("script");
     scriptElement.textContent =
-      type === "js" ? newValue : files["script.js"].value;
+      type === "js" ? updatedValue : files["script.js"].value;
     doc.body.appendChild(scriptElement);
 
-    // Ensure the iframe content window and document are accessible
     const iframeDoc = iframe.contentDocument;
 
     if (!iframeDoc) return;
 
-    // Clear the current contents
     iframeDoc.open();
     iframeDoc.write(doc.documentElement.innerHTML);
     iframeDoc.close();
@@ -76,6 +103,13 @@ export function MonacoEditor() {
 
   useEffect(() => {
     updateIframeContent(files["index.html"].value);
+
+    // fetch("/api/updateFiles?id=1", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     files,
+    //   }),
+    // });
   }, []);
 
   useEffect(() => {
