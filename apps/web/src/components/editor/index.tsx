@@ -27,13 +27,17 @@ export function MonacoEditor() {
     console.log(editorRef?.current?.getValue());
   }
 
-  const handleChange: OnChange = (newValue: string | undefined) => {
+  const handleChange: OnChange = (newValue: string | undefined, e) => {
     if (newValue === undefined) return;
 
-    updateIframeContent(newValue);
+    // @ts-ignore
+    updateIframeContent(newValue, fileName.split(".")[1]);
   };
 
-  function updateIframeContent(newValue) {
+  function updateIframeContent(
+    newValue: string,
+    type: "html" | "css" | "js" = "html",
+  ) {
     if (!previewRef.current) return;
 
     const iframe = previewRef.current;
@@ -42,16 +46,21 @@ export function MonacoEditor() {
 
     const parser = new DOMParser();
 
-    const doc = parser.parseFromString(newValue, "text/html");
+    const doc = parser.parseFromString(
+      type === "html" ? newValue : files["index.html"].value,
+      "text/html",
+    );
 
     // Inject CSS
     const styleElement = doc.createElement("style");
-    styleElement.textContent = files["style.css"].value;
+    styleElement.textContent =
+      type === "css" ? newValue : files["style.css"].value;
     doc.head.appendChild(styleElement);
 
     // Inject JavaScript
     const scriptElement = doc.createElement("script");
-    scriptElement.textContent = files["script.js"].value;
+    scriptElement.textContent =
+      type === "js" ? newValue : files["script.js"].value;
     doc.body.appendChild(scriptElement);
 
     // Ensure the iframe content window and document are accessible
@@ -102,6 +111,12 @@ export function MonacoEditor() {
           defaultValue={file.value}
           onMount={handleEditorDidMount}
           onChange={handleChange}
+          options={{
+            formatOnPaste: true,
+            formatOnType: true,
+            autoIndent: "full",
+            "semanticHighlighting.enabled": true,
+          }}
         />
 
         <Button onClick={showValue}>Execute</Button>
