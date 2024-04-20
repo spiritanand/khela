@@ -5,9 +5,7 @@
   ],
   "globalEnv": [
     "PORT",
-    "REDIS_URL",
-    "UPSTASH_REDIS_REST_URL",
-    "UPSTASH_REDIS_REST_TOKEN"
+    "REDIS_URL"
   ],
   "pipeline": {
     "build": {

@@ -1,5 +1,4 @@
 import { MonacoEditor } from "@/components/editor";
-// import files from "@/components/editor/files";
 import redis from "@/lib/redis";
 
 async function Page({ params }: { params: { id: string } }) {
