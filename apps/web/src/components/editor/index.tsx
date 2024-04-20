@@ -6,12 +6,23 @@ import { Button } from "@/components/ui/button";
 import { editor } from "monaco-editor";
 import dynamic from "next/dynamic";
 import debounce from "lodash.debounce";
+import { useParams } from "next/navigation";
 
 const XTerminal = dynamic(() => import("src/components/xterminal"), {
   ssr: false,
 });
 
-export function MonacoEditor({ initFiles }: { initFiles: any }) {
+export function MonacoEditor({
+  name,
+  type,
+  initFiles,
+}: {
+  name: string;
+  type: string;
+  initFiles: any;
+}) {
+  const params = useParams<{ id: string }>();
+
   const [files, setFiles] = useState(initFiles);
   const [fileName, setFileName] = useState("index.html");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -36,7 +47,7 @@ export function MonacoEditor({ initFiles }: { initFiles: any }) {
   };
 
   const updateFiles = useCallback((updatedFiles: any) => {
-    fetch("/api/updateFiles?id=1", {
+    fetch(`/api/updateFiles?id=${params.id}`, {
       method: "POST",
       body: JSON.stringify({
         files: updatedFiles,
@@ -103,13 +114,6 @@ export function MonacoEditor({ initFiles }: { initFiles: any }) {
 
   useEffect(() => {
     updateIframeContent(files["index.html"].value);
-
-    // fetch("/api/updateFiles?id=1", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     files,
-    //   }),
-    // });
   }, []);
 
   useEffect(() => {
@@ -117,48 +121,54 @@ export function MonacoEditor({ initFiles }: { initFiles: any }) {
   }, [file.name]);
 
   return (
-    <div className="flex">
-      <div className="flex-1">
-        <Button
-          disabled={fileName === "script.js"}
-          onClick={() => setFileName("script.js")}
-        >
-          script.js
-        </Button>
-        <Button
-          disabled={fileName === "style.css"}
-          onClick={() => setFileName("style.css")}
-        >
-          style.css
-        </Button>
-        <Button
-          disabled={fileName === "index.html"}
-          onClick={() => setFileName("index.html")}
-        >
-          index.html
-        </Button>
-        <Editor
-          height="60vh"
-          theme="vs-dark"
-          path={file.name}
-          defaultLanguage={file.language}
-          defaultValue={file.value}
-          onMount={handleEditorDidMount}
-          onChange={handleChange}
-          options={{
-            formatOnPaste: true,
-            formatOnType: true,
-            autoIndent: "full",
-            "semanticHighlighting.enabled": true,
-          }}
-        />
+    <>
+      <h4 className="my-2 scroll-m-20 text-center text-xl font-semibold tracking-tight">
+        {name} - {type}
+      </h4>
 
-        <Button onClick={showValue}>Execute</Button>
+      <div className="flex">
+        <div className="flex-1">
+          <Button
+            disabled={fileName === "script.js"}
+            onClick={() => setFileName("script.js")}
+          >
+            script.js
+          </Button>
+          <Button
+            disabled={fileName === "style.css"}
+            onClick={() => setFileName("style.css")}
+          >
+            style.css
+          </Button>
+          <Button
+            disabled={fileName === "index.html"}
+            onClick={() => setFileName("index.html")}
+          >
+            index.html
+          </Button>
+          <Editor
+            height="60vh"
+            theme="vs-dark"
+            path={file.name}
+            defaultLanguage={file.language}
+            defaultValue={file.value}
+            onMount={handleEditorDidMount}
+            onChange={handleChange}
+            options={{
+              formatOnPaste: true,
+              formatOnType: true,
+              autoIndent: "full",
+              "semanticHighlighting.enabled": true,
+            }}
+          />
 
-        <XTerminal />
+          <Button onClick={showValue}>Execute</Button>
+
+          <XTerminal />
+        </div>
+
+        <iframe ref={previewRef} className="flex-1"></iframe>
       </div>
-
-      <iframe ref={previewRef} className="flex-1"></iframe>
-    </div>
+    </>
   );
 }

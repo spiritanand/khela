@@ -6,13 +6,13 @@ async function Page({ params }: { params: { id: string } }) {
 
   if (!data) return <div>Not found</div>;
 
-  const files = JSON.parse(data);
-  // console.log(files);
-  // console.log({ data });
+  const ground = JSON.parse(data);
+  const { name, type, files } = ground;
+  console.log({ name, type, files });
 
   return (
     <main>
-      <MonacoEditor initFiles={files} />
+      <MonacoEditor initFiles={files} name={name} type={type} />
     </main>
   );
 }

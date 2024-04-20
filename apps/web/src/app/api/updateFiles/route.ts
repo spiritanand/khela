@@ -13,7 +13,22 @@ export async function POST(request: NextRequest) {
 
   const { files } = await request.json();
 
-  redis.set(id, JSON.stringify(files));
+  const ground = await redis.get(id);
+  if (!ground)
+    return Response.json(
+      { success: false, message: "No data found" },
+      { status: 404 },
+    );
 
-  return Response.json({ success: true, files });
+  const { name, type } = JSON.parse(ground);
+
+  const updatedFiles = {
+    files,
+    name,
+    type,
+  };
+
+  await redis.set(id, JSON.stringify(updatedFiles));
+
+  return Response.json({ success: true });
 }
