@@ -24,7 +24,9 @@ export function MonacoEditor({
   const params = useParams<{ id: string }>();
 
   const [files, setFiles] = useState(initFiles);
-  const [fileName, setFileName] = useState("index.html");
+  const [fileName, setFileName] = useState(
+    type === "js" ? "index.html" : "index.js",
+  );
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const previewRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -39,11 +41,20 @@ export function MonacoEditor({
     console.log(editorRef?.current?.getValue());
   }
 
-  const handleChange: OnChange = (newValue: string | undefined, e) => {
-    if (newValue === undefined) return;
+  const handleChange: OnChange = (updatedValue: string | undefined) => {
+    if (updatedValue === undefined) return;
 
-    // @ts-ignore
-    updateIframeContent(newValue, fileName.split(".")[1]);
+    if (type === "js")
+      // @ts-ignore
+      updateIframeContent(updatedValue, fileName.split(".")[1]);
+    else
+      debouncedUpdateFiles({
+        ...files,
+        [fileName]: {
+          ...files[fileName],
+          value: updatedValue,
+        },
+      });
   };
 
   const updateFiles = useCallback((updatedFiles: any) => {
@@ -113,7 +124,7 @@ export function MonacoEditor({
   }
 
   useEffect(() => {
-    updateIframeContent(files["index.html"].value);
+    if (type === "js") updateIframeContent(files["index.html"].value);
   }, []);
 
   useEffect(() => {
@@ -128,24 +139,17 @@ export function MonacoEditor({
 
       <div className="flex">
         <div className="flex-1">
-          <Button
-            disabled={fileName === "script.js"}
-            onClick={() => setFileName("script.js")}
-          >
-            script.js
-          </Button>
-          <Button
-            disabled={fileName === "style.css"}
-            onClick={() => setFileName("style.css")}
-          >
-            style.css
-          </Button>
-          <Button
-            disabled={fileName === "index.html"}
-            onClick={() => setFileName("index.html")}
-          >
-            index.html
-          </Button>
+          {files &&
+            Object.keys(files)?.map((key) => (
+              <Button
+                key={key}
+                disabled={fileName === key}
+                onClick={() => setFileName(key)}
+              >
+                {key}
+              </Button>
+            ))}
+
           <Editor
             height="60vh"
             theme="vs-dark"
@@ -167,7 +171,9 @@ export function MonacoEditor({
           <XTerminal />
         </div>
 
-        <iframe ref={previewRef} className="flex-1"></iframe>
+        {type === "js" ? (
+          <iframe ref={previewRef} className="flex-1"></iframe>
+        ) : null}
       </div>
     </>
   );

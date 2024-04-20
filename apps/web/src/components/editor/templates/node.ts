@@ -1,10 +1,10 @@
 const node = {
-  "index.ts": {
-    name: "index.ts",
-    language: "typescript",
+  "index.js": {
+    name: "index.js",
+    language: "javascript",
     value: `const a = 1; 
-   const b = 2;
-   console.log(a + b);`,
+const b = 2;
+console.log(a + b);`,
   },
 };
 
