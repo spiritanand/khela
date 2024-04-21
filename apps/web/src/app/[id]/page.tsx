@@ -8,7 +8,6 @@ async function Page({ params }: { params: { id: string } }) {
 
   const ground = JSON.parse(data);
   const { name, type, files } = ground;
-  console.log({ name, type, files });
 
   return (
     <main>
