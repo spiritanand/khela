@@ -37,9 +37,9 @@ export function MonacoEditor({
     editorRef.current = editor;
   };
 
-  function showValue() {
-    console.log(editorRef?.current?.getValue());
-  }
+  // function showValue() {
+  //   console.log(editorRef?.current?.getValue());
+  // }
 
   const handleChange: OnChange = (updatedValue: string | undefined) => {
     if (updatedValue === undefined) return;
@@ -166,9 +166,7 @@ export function MonacoEditor({
             }}
           />
 
-          <Button onClick={showValue}>Execute</Button>
-
-          <XTerminal />
+          <XTerminal code={files["index.js"]} />
         </div>
 
         {type === "js" ? (

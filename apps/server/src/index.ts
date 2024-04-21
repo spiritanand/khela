@@ -2,6 +2,7 @@ import { createServer, createWsServer } from "./server";
 import { log } from "@repo/logger";
 import http from "http";
 import { spawn } from "node-pty";
+import { saveCodeToFile } from "./controllers/compute/handleCompute";
 
 const shell = "bash";
 
@@ -16,7 +17,7 @@ wss.on("connection", async (ws) => {
     env: process.env,
   });
 
-  ws.on("message", (message: string) => {
+  ws.on("message", async (message: string) => {
     const data = JSON.parse(message.toString());
 
     if (data.type === "connect") {
@@ -26,6 +27,14 @@ wss.on("connection", async (ws) => {
     // Catch incoming request
     if (data.type === "command") {
       ptyProcess.write(data?.payload?.message);
+    }
+
+    if (data.type === "execute") {
+      if (!data?.payload?.code) return;
+
+      const filePath = await saveCodeToFile(data?.payload?.code?.value);
+
+      ptyProcess.write(`node ${filePath}\n`);
     }
   });
 

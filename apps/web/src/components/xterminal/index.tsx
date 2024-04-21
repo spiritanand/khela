@@ -5,13 +5,25 @@
 import { useEffect, useState } from "react";
 import TerminalDiv from "@/components/xterminal/TerminalDiv";
 import { Terminal } from "@xterm/xterm";
+import { Button } from "@/components/ui/button";
 
 const term = new Terminal({ cursorBlink: true });
 
-function xt() {
+function xt({ code }: { code: string }) {
   const [webSocket, setWebSocket] = useState<WebSocket>(
     () => new WebSocket("ws://localhost:8080"),
   );
+
+  function handleExecute() {
+    const data = {
+      type: "execute",
+      payload: {
+        code,
+      },
+    };
+
+    webSocket.send(JSON.stringify(data));
+  }
 
   useEffect(() => {
     // connect to ws
@@ -45,7 +57,13 @@ function xt() {
     };
   }, [webSocket]);
 
-  return <TerminalDiv ws={webSocket} term={term} />;
+  return (
+    <>
+      <Button onClick={handleExecute}>Execute</Button>
+
+      <TerminalDiv ws={webSocket} term={term} />
+    </>
+  );
 }
 
 export default xt;
