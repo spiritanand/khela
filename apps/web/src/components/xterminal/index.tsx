@@ -11,7 +11,7 @@ const term = new Terminal({ cursorBlink: true });
 
 function xt({ code }: { code: string }) {
   const [webSocket, setWebSocket] = useState<WebSocket>(
-    () => new WebSocket("ws://localhost:8080"),
+    () => new WebSocket(process.env.WS_URL || "ws://localhost:8080"),
   );
 
   function handleExecute() {
@@ -49,7 +49,7 @@ function xt({ code }: { code: string }) {
 
     // recreating ws connection on close
     webSocket.onclose = () => {
-      setWebSocket(new WebSocket("ws://localhost:8080"));
+      setWebSocket(new WebSocket(process.env.WS_URL || "ws://localhost:8080"));
     };
 
     return () => {

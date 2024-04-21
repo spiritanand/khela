@@ -3,12 +3,20 @@
 import { Terminal } from "@xterm/xterm";
 import { useEffect, useRef } from "react";
 import "@xterm/xterm/css/xterm.css";
+import { FitAddon } from "@xterm/addon-fit";
+
+const fitAddon = new FitAddon();
 
 function terminalDiv({ term, ws }: { term: Terminal; ws: WebSocket }) {
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!terminalRef.current) return;
+
+    // add ons
+    term.loadAddon(fitAddon);
+    term.open(terminalRef.current);
+    fitAddon.fit();
 
     term.open(terminalRef.current);
 

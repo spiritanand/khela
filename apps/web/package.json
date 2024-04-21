@@ -19,6 +19,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@repo/ui": "workspace:*",
     "@upstash/redis": "^1.30.0",
+    "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

@@ -1,70 +1,70 @@
-# Turborepo Docker starter
+# Khela
 
-This is an official Docker starter Turborepo.
+## Introduction
 
-## Using this example
+Khela is an online Integrated Development Environment (IDE) playground designed to support the seamless execution of
+Node.js and Vanilla JavaScript code.
 
-Run the following command:
+## Table of Contents
 
-```sh
-npx create-turbo@latest -e with-docker
-```
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Contributors](#contributors)
+- [License](#license)
 
-## What's inside?
+## Installation
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package manager. It includes the following packages/apps:
+Before you can run Khela locally, you'll need to have Node.js, Redis, and npm (or Yarn) installed on your machine.
+Follow these steps to get Khela up and running:
 
-### Apps and Packages
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/spiritanand/khela.git
+    cd khela
+    ```
+2. Install the dependencies:
+    ```bash
+    pnpm install
+    ```
+   Note: If you are on macOS you will need to install XCode for compiling the source code of the dependency `node-pty`.
+3. Configure the environment variables:
+    ```bash
+    cd apps/web
+    cp .env.example .env.local
+    ```
+   Update the `.env.local` file with the required environment variables i.e. `REDIS_URL` and `WS_URL`. Refer
+   to - [Redis local setup using Docker](https://redis.io/learn/operate/orchestration/docker)
+   and [Redis Insight](https://redis.io/insight/) for viewing your Redis DB in a GUI.
+4. Start the development server
+    ```bash
+   pnpm dev
+    ```
 
-- `@repo/web`: a [Next.js](https://nextjs.org/) app
-- `@repo/api`: an [Express](https://expressjs.com/) server
-- `@repo/ui`: ui: a React component library
-- `@repo/eslint-config-custom`: `eslint` configurations for client side applications (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/eslint-config-custom-server`: `eslint` configurations for server side applications (includes `eslint-config-next` and `eslint-config-prettier`)
-- `scripts`: Jest configurations
-- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
+## Usage
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+To use Khela, navigate to `http://localhost:3000` in your web browser after starting the development server. From there,
+you can create new playgrounds for Node.js or Vanilla JavaScript, write your code, and execute it in real-time within
+the integrated terminal.
 
-### Docker
+## Features
 
-This repo is configured to be built with Docker, and Docker compose. To build all apps in this repo:
+- **Interactive Coding Environment:** Supports Node.js and Vanilla JavaScript execution.
+- **Real-time Execution:** Instant code execution in the browser + Hot reload for the frontend.
+- **Persistent Storage:** Uses Redis to store playground IDs and code snippets.
+- **Real-time Communication:** Utilizes WebSockets for seamless frontend and backend communication.
 
-```
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create app_network
+## Dependencies
 
-# Build prod using new BuildKit engine
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build
+- Next.js
+- Express
+- Redis
+- WebSocket (ws for node and native WebSocket for browser)
 
-# Start prod in detached mode
-docker-compose -f docker-compose.yml up -d
-```
+Please refer to the `package.json` file for a detailed list of dependencies and their respective versions.
 
-Open http://localhost:3000.
+## License
 
-To shutdown all running containers:
+Khela is open source and available under the [MIT License](https://opensource.org/license/mit).
 
-```
-# Stop all running containers
-docker kill $(docker ps -q) && docker rm $(docker ps -a -q)
-```
-
-### Remote Caching
-
-This example includes optional remote caching. In the Dockerfiles of the apps, uncomment the build arguments for `TURBO_TEAM` and `TURBO_TOKEN`. Then, pass these build arguments to your Docker build.
-
-You can test this behavior using a command like:
-
-`docker build -f apps/web/Dockerfile . --build-arg TURBO_TEAM=“your-team-name” --build-arg TURBO_TOKEN=“your-token“ --no-cache`
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting

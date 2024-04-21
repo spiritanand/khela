@@ -6,7 +6,7 @@ import { saveCodeToFile } from "./controllers/compute/handleCompute";
 
 const shell = "bash";
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 const app = createServer();
 const server = http.createServer(app);
 const wss = createWsServer(server);
