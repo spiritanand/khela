@@ -24,10 +24,10 @@ export function MonacoEditor({
 }) {
   const params = useParams<{ id: string }>();
 
+  const isJs = type === "js";
+
   const [files, setFiles] = useState(initFiles);
-  const [fileName, setFileName] = useState(
-    type === "js" ? "index.html" : "index.js",
-  );
+  const [fileName, setFileName] = useState(isJs ? "index.html" : "index.js");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const previewRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -45,7 +45,7 @@ export function MonacoEditor({
   const handleChange: OnChange = (updatedValue: string | undefined) => {
     if (updatedValue === undefined) return;
 
-    if (type === "js")
+    if (isJs)
       // @ts-ignore
       updateIframeContent(updatedValue, fileName.split(".")[1]);
     else
@@ -59,7 +59,7 @@ export function MonacoEditor({
   };
 
   const updateFiles = useCallback((updatedFiles: any) => {
-    fetch(`/api/updateFiles?id=${params.id}`, {
+    void fetch(`/api/updateFiles?id=${params.id}`, {
       method: "POST",
       body: JSON.stringify({
         files: updatedFiles,
@@ -111,8 +111,7 @@ export function MonacoEditor({
 
     // Inject JS
     const scriptElement = doc.createElement("script");
-    scriptElement.textContent =
-      type === "js" ? updatedValue : files["script.js"].value;
+    scriptElement.textContent = isJs ? updatedValue : files["script.js"].value;
     doc.body.appendChild(scriptElement);
 
     const iframeDoc = iframe.contentDocument;
@@ -125,7 +124,7 @@ export function MonacoEditor({
   }
 
   useEffect(() => {
-    if (type === "js") updateIframeContent(files["index.html"].value);
+    if (isJs) updateIframeContent(files["index.html"].value);
   }, []);
 
   useEffect(() => {
@@ -164,7 +163,7 @@ export function MonacoEditor({
                 ))}
 
               <Editor
-                height={type === "js" ? "92vh" : "60vh"}
+                height={isJs ? "92vh" : "60vh"}
                 theme="vs-dark"
                 path={file.name}
                 defaultLanguage={file.language}
@@ -180,7 +179,7 @@ export function MonacoEditor({
               />
             </Panel>
 
-            {type !== "js" ? (
+            {!isJs ? (
               <>
                 <PanelResizeHandle className="bg-primary h-1" />
 
@@ -192,7 +191,7 @@ export function MonacoEditor({
           </PanelGroup>
         </Panel>
 
-        {type === "js" ? (
+        {isJs ? (
           <>
             <PanelResizeHandle />
 
