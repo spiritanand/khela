@@ -1,3 +1,3 @@
-const a = -10.8; 
-const b = 30;
+const a = 1; 
+const b = 2;
 console.log(a + b);

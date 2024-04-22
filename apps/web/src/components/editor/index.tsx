@@ -164,7 +164,7 @@ export function MonacoEditor({
                 ))}
 
               <Editor
-                height="60vh"
+                height={type === "js" ? "92vh" : "60vh"}
                 theme="vs-dark"
                 path={file.name}
                 defaultLanguage={file.language}
@@ -180,21 +180,27 @@ export function MonacoEditor({
               />
             </Panel>
 
-            <PanelResizeHandle className="bg-primary h-1" />
+            {type !== "js" ? (
+              <>
+                <PanelResizeHandle className="bg-primary h-1" />
 
-            <Panel>
-              <XTerminal code={files["index.js"]} />
-            </Panel>
+                <Panel>
+                  <XTerminal code={files["index.js"]} />
+                </Panel>
+              </>
+            ) : null}
           </PanelGroup>
         </Panel>
 
-        <PanelResizeHandle />
+        {type === "js" ? (
+          <>
+            <PanelResizeHandle />
 
-        <Panel>
-          {type === "js" ? (
-            <iframe ref={previewRef} className="h-full w-full"></iframe>
-          ) : null}
-        </Panel>
+            <Panel>
+              <iframe ref={previewRef} className="h-full w-full"></iframe>
+            </Panel>
+          </>
+        ) : null}
       </PanelGroup>
     </>
   );
