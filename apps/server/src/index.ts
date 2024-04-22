@@ -1,5 +1,4 @@
 import { createServer, createWsServer } from "./server";
-import { log } from "@repo/logger";
 import http from "http";
 import { spawn } from "node-pty";
 import { saveCodeToFile } from "./controllers/compute/handleCompute";
@@ -57,5 +56,5 @@ wss.on("connection", async (ws) => {
 });
 
 server.listen(port, () => {
-  log(`server running on ${port}`);
+  console.log(`server running on ${port}`);
 });

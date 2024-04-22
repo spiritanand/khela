@@ -1,18 +1,31 @@
 {
-	"extends": "@repo/typescript-config/base.json",
-	"compilerOptions": {
-		"lib": [
-			"ES2015"
-		],
-		"outDir": "./dist",
-		"rootDir": "./src",
-		"declaration": false,
-		"declarationMap": false
-	},
-	"exclude": [
-		"node_modules"
-	],
-	"include": [
-		"src/**/*"
-	]
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "compilerOptions": {
+    "composite": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "lib": [
+      "ESNext"
+    ],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src/**/*"
+  ]
 }

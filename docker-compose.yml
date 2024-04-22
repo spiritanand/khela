@@ -1,29 +1,29 @@
 version: "3"
 
 services:
-  web:
-    container_name: web
-    build:
-      context: .
-      dockerfile: ./apps/web/Dockerfile
-    restart: always
-    ports:
-      - 3000:3000
-    networks:
-      - app_network
-  api:
+  #  web:
+  #    container_name: web
+  #    build:
+  #      context: .
+  #      dockerfile: ./apps/web/Dockerfile
+  #    restart: always
+  #    ports:
+  #      - 3000:3000
+  #    networks:
+  #      - app_network
+  server:
     container_name: server
     build:
       context: .
       dockerfile: apps/server/Dockerfile
     restart: always
     ports:
-      - 8080:8080
-    networks:
-      - app_network
+      - 8081:8081
+#    networks:
+#      - app_network
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
-networks:
-  app_network:
-    external: true
+#networks:
+#  app_network:
+#    external: true
