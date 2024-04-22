@@ -36,7 +36,7 @@ function terminalDiv({ term, ws }: { term: Terminal; ws: WebSocket }) {
     <div
       id="terminal"
       ref={terminalRef}
-      className="max-h-[32vh] w-full overflow-scroll"
+      className="h-full w-full overflow-scroll"
     />
   );
 }

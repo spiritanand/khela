@@ -7,6 +7,7 @@ import { editor } from "monaco-editor";
 import dynamic from "next/dynamic";
 import debounce from "lodash.debounce";
 import { useParams } from "next/navigation";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 const XTerminal = dynamic(() => import("src/components/xterminal"), {
   ssr: false,
@@ -137,42 +138,64 @@ export function MonacoEditor({
         {name} - {type}
       </h4>
 
-      <div className="flex">
-        <div className="flex-1">
-          {files &&
-            Object.keys(files)?.map((key) => (
-              <Button
-                key={key}
-                disabled={fileName === key}
-                onClick={() => setFileName(key)}
-              >
-                {key}
-              </Button>
-            ))}
-
-          <Editor
-            height="60vh"
-            theme="vs-dark"
-            path={file.name}
-            defaultLanguage={file.language}
-            defaultValue={file.value}
-            onMount={handleEditorDidMount}
-            onChange={handleChange}
-            options={{
-              formatOnPaste: true,
-              formatOnType: true,
-              autoIndent: "full",
-              "semanticHighlighting.enabled": true,
+      <PanelGroup
+        direction="horizontal"
+        style={{
+          height: "92vh !important",
+        }}
+      >
+        <Panel>
+          <PanelGroup
+            direction="vertical"
+            style={{
+              height: "92vh !important",
             }}
-          />
+          >
+            <Panel>
+              {files &&
+                Object.keys(files)?.map((key) => (
+                  <Button
+                    key={key}
+                    disabled={fileName === key}
+                    onClick={() => setFileName(key)}
+                  >
+                    {key}
+                  </Button>
+                ))}
 
-          <XTerminal code={files["index.js"]} />
-        </div>
+              <Editor
+                height="60vh"
+                theme="vs-dark"
+                path={file.name}
+                defaultLanguage={file.language}
+                defaultValue={file.value}
+                onMount={handleEditorDidMount}
+                onChange={handleChange}
+                options={{
+                  formatOnPaste: true,
+                  formatOnType: true,
+                  autoIndent: "full",
+                  "semanticHighlighting.enabled": true,
+                }}
+              />
+            </Panel>
 
-        {type === "js" ? (
-          <iframe ref={previewRef} className="flex-1"></iframe>
-        ) : null}
-      </div>
+            <PanelResizeHandle className="bg-primary h-1" />
+
+            <Panel>
+              <XTerminal code={files["index.js"]} />
+            </Panel>
+          </PanelGroup>
+        </Panel>
+
+        <PanelResizeHandle />
+
+        <Panel>
+          {type === "js" ? (
+            <iframe ref={previewRef} className="h-full w-full"></iframe>
+          ) : null}
+        </Panel>
+      </PanelGroup>
     </>
   );
 }
