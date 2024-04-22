@@ -14,4 +14,4 @@ ENV PORT 8081
 
 EXPOSE 8081
 
-CMD ["node", "dist/index.js"]
+CMD ["pnpm", "start"]
