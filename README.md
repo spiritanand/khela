@@ -34,7 +34,7 @@ Follow these steps to get Khela up and running:
     cd apps/web
     cp .env.example .env.local
     ```
-   Update the `.env.local` file with the required environment variables i.e. `REDIS_URL` and `WS_URL`. Refer
+   Update the `.env.local` file with the required environment variables i.e. `REDIS_URL` and `NEXT_PUBLIC_WS_URL`. Refer
    to - [Redis local setup using Docker](https://redis.io/learn/operate/orchestration/docker)
    and [Redis Insight](https://redis.io/insight/) for viewing your Redis DB in a GUI.
 4. Start the development server
