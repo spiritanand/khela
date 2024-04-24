@@ -14,6 +14,8 @@ wss.on("connection", async (ws) => {
   const ptyProcess = spawn(shell, [], {
     name: "xterm-color",
     env: process.env,
+    uid: 1001,
+    gid: 1001,
   });
 
   ws.on("message", async (message: string) => {
