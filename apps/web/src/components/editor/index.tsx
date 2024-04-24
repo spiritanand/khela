@@ -13,7 +13,7 @@ const XTerminal = dynamic(() => import("src/components/xterminal"), {
   ssr: false,
 });
 
-export function MonacoEditor({
+export default function MonacoEditor({
   name,
   type,
   initFiles,
@@ -133,9 +133,12 @@ export function MonacoEditor({
 
   return (
     <>
-      <h4 className="my-2 scroll-m-20 text-center text-xl font-semibold tracking-tight">
+      <h4 className="mt-2 scroll-m-20 text-center text-xl font-semibold tracking-tight">
         {name} - {type}
       </h4>
+      <p className="mb-2 text-center text-xs">
+        Please refresh if IDE not visible
+      </p>
 
       <PanelGroup
         direction="horizontal"
