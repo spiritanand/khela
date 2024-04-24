@@ -80,8 +80,6 @@ export default function MonacoEditor({
     [],
   );
 
-  console.log({ files: files["index.js"] });
-
   function updateIframeContent(
     updatedValue: string,
     type: "html" | "css" | "js" = "html",
