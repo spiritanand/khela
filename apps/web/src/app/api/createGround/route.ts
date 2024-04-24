@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     files: files[type],
   };
 
-  redis.set(id, JSON.stringify(ground));
+  await redis.set(id, JSON.stringify(ground));
 
   return Response.json({ success: true, ground });
 }

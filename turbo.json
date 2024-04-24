@@ -6,7 +6,7 @@
   "globalEnv": [
     "PORT",
     "REDIS_URL",
-    "WS_URL"
+    "NEXT_PUBLIC_WS_URL"
   ],
   "pipeline": {
     "build": {
