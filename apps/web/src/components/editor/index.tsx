@@ -146,14 +146,14 @@ export default function MonacoEditor({
           height: "92vh !important",
         }}
       >
-        <Panel>
+        <Panel defaultSize={100}>
           <PanelGroup
             direction="vertical"
             style={{
               height: "92vh !important",
             }}
           >
-            <Panel>
+            <Panel defaultSize={100}>
               {files &&
                 Object.keys(files)?.map((key) => (
                   <Button
@@ -186,7 +186,7 @@ export default function MonacoEditor({
               <>
                 <PanelResizeHandle className="bg-primary h-1" />
 
-                <Panel>
+                <Panel defaultSize={100}>
                   <XTerminal code={files["index.js"]} />
                 </Panel>
               </>
@@ -198,7 +198,7 @@ export default function MonacoEditor({
           <>
             <PanelResizeHandle />
 
-            <Panel>
+            <Panel defaultSize={100}>
               <iframe ref={previewRef} className="h-full w-full"></iframe>
             </Panel>
           </>
