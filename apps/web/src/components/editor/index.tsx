@@ -48,14 +48,19 @@ export default function MonacoEditor({
     if (isJs)
       // @ts-ignore
       updateIframeContent(updatedValue, fileName.split(".")[1]);
-    else
-      debouncedUpdateFiles({
+    else {
+      const updatedState = {
         ...files,
         [fileName]: {
           ...files[fileName],
           value: updatedValue,
         },
-      });
+      };
+
+      setFiles(updatedState);
+
+      debouncedUpdateFiles(updatedState);
+    }
   };
 
   const updateFiles = useCallback((updatedFiles: any) => {
@@ -75,6 +80,8 @@ export default function MonacoEditor({
     [],
   );
 
+  console.log({ files: files["index.js"] });
+
   function updateIframeContent(
     updatedValue: string,
     type: "html" | "css" | "js" = "html",
@@ -89,8 +96,9 @@ export default function MonacoEditor({
       },
     };
 
-    debouncedUpdateFiles(updatedState);
     setFiles(updatedState);
+
+    debouncedUpdateFiles(updatedState);
 
     const iframe = previewRef.current;
 

@@ -3,7 +3,7 @@ import http from "http";
 import { spawn } from "node-pty";
 import { saveCodeToFile } from "./controllers/compute/handleCompute";
 
-const shell = "bash";
+const shell = "/bin/bash";
 
 const port = process.env.PORT || 8081;
 const app = createServer();
@@ -30,6 +30,10 @@ wss.on("connection", async (ws) => {
 
     if (data.type === "execute") {
       if (!data?.payload?.code) return;
+
+      console.log({
+        val: data?.payload?.code?.value,
+      });
 
       const filePath = await saveCodeToFile(data?.payload?.code?.value);
 

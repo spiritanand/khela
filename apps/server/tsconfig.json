@@ -15,7 +15,8 @@
     "skipLibCheck": true,
     "strict": true,
     "lib": [
-      "ESNext"
+      "ESNext",
+      "dom"
     ],
     "outDir": "./dist",
     "rootDir": "./src",
