@@ -192,7 +192,11 @@ export default function MonacoEditor({
               <>
                 <PanelResizeHandle className="bg-primary h-1" />
 
-                <Panel>
+                <Panel
+                  style={{
+                    overflowY: "auto",
+                  }}
+                >
                   <XTerminal code={files["index.js"]} />
                 </Panel>
               </>
